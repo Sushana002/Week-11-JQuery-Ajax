@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap-grid.min.css"> 
+    <title>Tic-Tac-Toe</title>
+</head>
+<body>
+    <!-- Creating the tic-tac-toe game, providing a header.-->
+     <section>
+        <h1 class="tictactoe">Tic-Tac-Toe</h1>
+    <!--Creating a square of nine div's and giving it a class and an id.-->
+        <div class="tic-tac-toe">
+            <div class="cell" data-cell-index="0"></div>
+            <div class="cell" data-cell-index="1"></div>
+            <div class="cell" data-cell-index="2"></div>
+            <div class="cell" data-cell-index="3"></div>
+            <div class="cell" data-cell-index="4"></div>
+            <div class="cell" data-cell-index="5"></div>
+            <div class="cell" data-cell-index="6"></div>
+            <div class="cell" data-cell-index="7"></div>
+            <div class="cell" data-cell-index="8"></div>
+        </div>
+        <div class="game-control"></div>
+        <br>
+        <!--adding a butting so when someone completes the game, they are able to reset-->
+        <button class="game-reset">Restart Game</button>
+    <div id="winnerMessage" class="hidden"></div>
+</section>
+    <script src="week11.js"></script>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+</body>
+</html>

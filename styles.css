@@ -1,0 +1,33 @@
+body {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    height: 100vh; 
+    font-family: monospace; 
+    background-color: rgb(144, 0, 255);
+
+}
+
+.tic-tac-toe {
+    display: grid; 
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px; 
+}
+.tic-tac-toe div {
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    background-color: white;
+    font-size: 2em; 
+    border: 5px solid black; 
+    cursor: pointer;
+}
+
+.gameControl {
+    margin-top: 20px; 
+}
+
+.hidden {
+    display: none;
+}
