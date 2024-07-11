@@ -1,90 +1,54 @@
-let statusDisplay = document.querySelector('.game-control'); 
+document.addEventListener('DOMContentLoaded', () => {
+    let currentPlayer = 'X';
+    let grid = document.querySelectorAll('#ticTacToeGrid div');
+    let turnIndicator = document.getElementById('turnIndicator');
+    let resetButton = document.getElementById('resetButton');
+    let winnerMessage = document.getElementById('winnerMessage');
 
-let gameActive  = true; 
+    function checkWinner() {
+        let winningCombinations = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
 
-let currentPlayer = "X"; 
+        for (let combination of winningCombinations) {
+            let [a, b, c] = combination;
+            if (grid[a].textContent && grid[a].textContent === grid[b].textContent && grid[a].textContent === grid[c].textContent) {
+                return grid[a].textContent;
+            }
+        }
 
-let gameState = ["", "", "", "", "", "", "", "", "",]; 
-
-let winnerMessage = () => `Player ${currentPlayer} has won!`; 
-let drawMessage = () => `Game ended in a draw!`; 
-let currentPlayerTurn = () => `It's ${currentPlayer}'s turn`; 
-
-statusDisplay.innerHTML = currentPlayerTurn(); 
-
-document.querySelector('.cell').forEach(cell => cell.addEventListener('click', handleCellClick)); 
-document.querySelector('.game-reset').addEventListener('click', handleRestartGame); 
-
-function handleCellClick(clickCellEvent) {
-    let clickedCell = clickCellEvent.target; 
-    let clickCellIndex = parseInt(
-        clickedCell.getAttribute('data-cell-index')
-    ); 
-
-    if (gameState[clickCellIndex] !== "" || !gameActive) {
-        return; 
+        return Array.from(grid).every(cell => cell.textContent) ? 'Draw' : null;
     }
 
-    handleCellPlayed(clickedCell, clickCellIndex); 
-    handleResultValidation(); 
-
-}
-
-function handleCellPlayed(clickedCell, clickedCellIndex) {
-    gameState[clickedCellIndex] = currentPlayer; 
-    clickedCell.innerHTML = currentPlayer; 
-}
-
-let winnerConditions = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-]; 
-function handleResultValidation() {
-    let roundWon = false; 
-    for (let i = 0; i <= 7; i++) {
-        let winnerCondition = winnerConditions[i]; 
-        let a = gameState[winnerCondition[0]]; 
-        let b = gameState[winnerCondition[1]]; 
-        let c = gameState[winnerCondition[2]]; 
-        if (a== '' || b === '' || c === '') {
-            continue; 
-        }
-        if (a === b && b === c) {
-            roundWon = true; 
-            break
+    function handleCellClick() {
+        if (this.textContent === '' && !winnerMessage.textContent) {
+            this.textContent = currentPlayer;
+            let winner = checkWinner();
+            if (winner) {
+                winnerMessage.textContent = winner === 'Draw' ? 'It\'s a Draw!' : `${winner} Wins!`;
+                winnerMessage.classList.remove('hidden');
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                turnIndicator.textContent = `${currentPlayer}'s Turn`;
+            }
         }
     }
-if (roundWon) {
-    statusDisplay.innerHTML = winnerMessage(); 
-    gameActive = false; 
-    return; 
-}
 
-let roundDraw = !gameState.includes(""); 
-if (roundWon) {
-    statusDisplay.innerHTML = drawMessage(); 
-    gameActive = false; 
-    return; 
+    function resetGame() {
+        grid.forEach(cell => cell.textContent = '');
+        currentPlayer = 'X';
+        turnIndicator.textContent = `${currentPlayer}'s Turn`;
+        winnerMessage.textContent = '';
+        winnerMessage.classList.add('hidden');
     }
-    handlePlayerChange(); 
-}
 
-function handlePlayerChange() {
-    currentPlayer = currentPlayer === "X" ? "O" : "X"; 
-    statusDisplay.innerHTML = currentPlayerTurn(); 
-}
-
-function handleRestartGame() {
-    gameActive = true; 
-    currentPlayer = "X"; 
-    gameState = ["", "", "", "", "", "", "", "", "", ""]; 
-    statusDisplay.innerHTML = currentPlayerTurn(); 
-    document.querySelectorAll('.cell')
-        .forEach(cell => cell.innerHTML = ""); 
-}
+    grid.forEach(cell => cell.addEventListener('click', handleCellClick));
+    resetButton.addEventListener('click', resetGame);
+});
